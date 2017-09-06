@@ -6,12 +6,15 @@ Page {
     title: "page2"
     objectName: "page2"
     Label {
+        id: label
         visible: true
         text: "Page2"
         anchors.centerIn: parent
-        MouseArea {
-            anchors.fill: parent
-            onClicked: pushPage("qrc:/Page3.qml");
-        }
+    }
+    Button {
+        text: "Clique aqui para page3"
+        anchors.top: label.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: pushPage("qrc:/Page3.qml");
     }
 }
