@@ -14,6 +14,7 @@ ApplicationWindow {
     property alias currentPage: pageStack.currentItem
     property alias depth: pageStack.depth
     property int mainPages: 1
+    property QtObject menuDrawer
     onDepthChanged: depth === 1 ? mainPages = 1 : mainPages = 0
 
     function pushPage(url, args) {
@@ -40,7 +41,7 @@ ApplicationWindow {
             AwesomeIcon.AwesomeIcon {
                 name: mainPages == 1 ? "bars" :"arrow_left"; color: "black"
                 size: 22
-                onClicked: mainPages == 1 ? drawer.open() : popPage()
+                onClicked: mainPages == 1 ? menuDrawer.open() : popPage()
             }
             Label {
                 text: currentPage.objectName
@@ -53,63 +54,12 @@ ApplicationWindow {
         }
     }
 
-    Drawer {
-        id: drawer
-        width: windowApp.width * 0.80
-        height: windowApp.height
-        interactive: depth === 1 ? true : false
-        y: header.height
-
-        ListView {
-            id: listview
-            width: parent.width; height: parent.height
-            snapMode: ListView.SnapToItem
-            clip: true
-
-            model: listModel
-
-            onMovementStarted: verticalScrollBar.opacity = 1
-            onMovementEnded: verticalScrollBar.opacity = 0
-
-            ScrollBar.vertical: ScrollBar {
-                id: verticalScrollBar
-                active: true
-                orientation: Qt.Vertical
-
-                opacity: 0
-                Behavior on opacity {NumberAnimation { duration: 500 }}
-
-                contentItem: Rectangle {
-                    implicitWidth: 4
-                    radius:2
-                    implicitHeight: 100
-                    color: "grey"
-                }
-            }
-
-            delegate: Component {
-                id: myDelegate
-                Rectangle {
-                    height: 50
-                    width: drawer.width - 2
-                    Label {
-                        id: label
-                        text: name
-                        anchors.centerIn: parent
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: pageStack.replace(urlName)
-                    }
-                    Rectangle { width: parent.width; height: 1; color: "black"; opacity: 0.1; anchors.bottom: parent.bottom }
-                }
-            }
-        }
-
-        ListModel {
-            id: listModel
-            ListElement { name: "Page1"; urlName: "qrc:/Page1.qml"}
-            ListElement { name: "Page2"; urlName: "qrc:/Page2.qml"}
+    Loader {
+        id: menuLoader
+        asynchronous: false
+        active: true; source: "qrc:/Menu.qml"
+        onLoaded: {
+            windowApp.menuDrawer = item;
         }
     }
 
@@ -117,7 +67,7 @@ ApplicationWindow {
         id: pageStack
         initialItem: "qrc:/Page1.qml"
         focus: true; anchors.fill: parent
-        onCurrentItemChanged: drawer.close()
+        onCurrentItemChanged: menuDrawer.close()
 
         Keys.onReleased: {
             if (event.key === Qt.Key_Back) {
