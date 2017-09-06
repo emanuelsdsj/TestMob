@@ -15,6 +15,7 @@ ApplicationWindow {
     property alias depth: pageStack.depth
     property int mainPages: 1
     property QtObject menuDrawer
+    property bool isLoggedIn: false
     onDepthChanged: depth === 1 ? mainPages = 1 : mainPages = 0
 
     function pushPage(url, args) {
@@ -25,8 +26,13 @@ ApplicationWindow {
         pageStack.pop()
     }
 
+    function userLogIn() {
+        isLoggedIn = !isLoggedIn;
+    }
+
     header: ToolBar {
         id: toolbar1
+        visible: isLoggedIn
         Rectangle {
             anchors.fill: parent
             color: "#4d4dff"
@@ -56,8 +62,8 @@ ApplicationWindow {
 
     Loader {
         id: menuLoader
-        asynchronous: false
-        active: true; source: "qrc:/Menu.qml"
+        asynchronous: true
+        active: isLoggedIn; source: "qrc:/Menu.qml"
         onLoaded: {
             windowApp.menuDrawer = item;
         }
@@ -65,9 +71,9 @@ ApplicationWindow {
 
     StackView {
         id: pageStack
-        initialItem: "qrc:/Page1.qml"
+        initialItem: "qrc:/Login.qml"
         focus: true; anchors.fill: parent
-        onCurrentItemChanged: menuDrawer.close()
+        onCurrentItemChanged: menuDrawer ? menuDrawer.close() : 0
 
         Keys.onReleased: {
             if (event.key === Qt.Key_Back) {

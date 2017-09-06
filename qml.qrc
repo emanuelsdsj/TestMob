@@ -9,5 +9,6 @@
         <file>Page2.qml</file>
         <file>Page3.qml</file>
         <file>Page4.qml</file>
+        <file>Login.qml</file>
     </qresource>
 </RCC>
