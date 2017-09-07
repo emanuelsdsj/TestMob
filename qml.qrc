@@ -9,5 +9,6 @@
         <file>AwesomeIcon/AwesomeIcon.qml</file>
         <file>AwesomeIcon/FontAwesome.otf</file>
         <file>AwesomeIcon/Awesome.js</file>
+        <file>Login.qml</file>
     </qresource>
 </RCC>

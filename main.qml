@@ -14,6 +14,7 @@ ApplicationWindow {
     property alias currentPage: pageStack.currentItem
     property alias currentPageSwipe: swipe.currentItem
     property alias depth: pageStack.depth
+    property bool isUserLoggedIn: false
     onDepthChanged:  depthChange()
     onCurrentPageSwipeChanged: currentPageSwipe ? toolbarText.text = currentPageSwipe.objectName : ""
     onCurrentPageChanged: currentPage ? toolbarText.text = currentPage.objectName : ""
@@ -38,8 +39,13 @@ ApplicationWindow {
         pageStack.pop()
     }
 
+    function userLogIn() {
+        isUserLoggedIn = !isUserLoggedIn;
+    }
+
     header: ToolBar {
         id: toolbar1
+        visible: isUserLoggedIn
         Rectangle {
             anchors.fill: parent
             color: "#4d4dff"
@@ -70,6 +76,7 @@ ApplicationWindow {
 
     SwipeView {
         id: swipe
+        visible: isUserLoggedIn
         anchors.fill: parent
         width: windowApp.width
         currentIndex: tabBar.currentIndex
@@ -84,6 +91,7 @@ ApplicationWindow {
 
     footer: TabBar {
         id: tabBar
+        visible: isUserLoggedIn
         currentIndex: swipe.currentIndex
 
         Repeater {
@@ -122,6 +130,7 @@ ApplicationWindow {
 
     StackView {
         id: pageStack
+        initialItem: "qrc:/Login.qml"
         focus: true; anchors.fill: parent
 
         Keys.onReleased: {
