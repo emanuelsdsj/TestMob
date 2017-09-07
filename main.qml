@@ -23,9 +23,13 @@ ApplicationWindow {
             mainPages = 1
             tabBar.visible = true
             toolbarText.text = currentPageSwipe.objectName
+            swipe.z = swipe.parent.z + 1
+            pageStack.z = pageStack.parent.z - 1
         } else {
             mainPages = 0
             tabBar.visible = false
+            pageStack.z = pageStack.parent.z + 1
+            swipe.z = swipe.parent.z - 1
         }
     }
 
@@ -40,7 +44,8 @@ ApplicationWindow {
     }
 
     function userLogIn() {
-        isUserLoggedIn = !isUserLoggedIn;
+        pageStack.clear()
+        isUserLoggedIn = !isUserLoggedIn
     }
 
     header: ToolBar {
@@ -48,7 +53,7 @@ ApplicationWindow {
         visible: isUserLoggedIn
         Rectangle {
             anchors.fill: parent
-            color: "#4d4dff"
+            color: Qt.rgba(0, 0, 255, 0.3)
         }
         anchors.leftMargin: 10
 
@@ -98,6 +103,7 @@ ApplicationWindow {
             model: listModel
             TabButton {
                 height: 35
+                Rectangle {anchors.fill: parent; color: Qt.rgba(0, 0, 255, 0.3)}
 
                 ColumnLayout {
                     spacing: 0; height: parent.height
@@ -131,7 +137,8 @@ ApplicationWindow {
     StackView {
         id: pageStack
         initialItem: "qrc:/Login.qml"
-        focus: true; anchors.fill: parent
+        //focus: true
+        anchors.fill: parent
 
         Keys.onReleased: {
             if (event.key === Qt.Key_Back) {

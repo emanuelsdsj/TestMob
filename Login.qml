@@ -76,7 +76,6 @@ Flickable {
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: {
                 userLogIn();
-                pageStack.clear()
             }
         }
     }
