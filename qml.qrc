@@ -1,14 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
         <file>Page1.qml</file>
-        <file>Menu.qml</file>
-        <file>AwesomeIcon/AwesomeIcon.qml</file>
-        <file>AwesomeIcon/FontAwesome.otf</file>
-        <file>AwesomeIcon/Awesome.js</file>
         <file>Page2.qml</file>
         <file>Page3.qml</file>
         <file>Page4.qml</file>
-        <file>Login.qml</file>
+        <file>AwesomeIcon/AwesomeIcon.qml</file>
+        <file>AwesomeIcon/FontAwesome.otf</file>
+        <file>AwesomeIcon/Awesome.js</file>
     </qresource>
 </RCC>
