@@ -15,11 +15,13 @@ ApplicationWindow {
     property alias currentPageSwipe: swipe.currentItem
     property alias depth: pageStack.depth
     onDepthChanged:  depthChange()
-    onCurrentPageSwipeChanged: pageStack.replace(swipe.currentItem)
+    onCurrentPageSwipeChanged: currentPageSwipe ? toolbarText.text = currentPageSwipe.objectName : ""
+    onCurrentPageChanged: currentPage ? toolbarText.text = currentPage.objectName : ""
     function depthChange() {
-        if(depth === 1){
+        if(depth === 0){
             mainPages = 1
             tabBar.visible = true
+            toolbarText.text = currentPageSwipe.objectName
         } else {
             mainPages = 0
             tabBar.visible = false
@@ -31,6 +33,8 @@ ApplicationWindow {
     }
 
     function popPage() {
+        if(depth === 1)
+            pageStack.clear()
         pageStack.pop()
     }
 
@@ -53,6 +57,7 @@ ApplicationWindow {
                 onClicked: popPage()
             }
             Label {
+                id: toolbarText
                 text: currentPage !== null ? currentPage.objectName : currentPageSwipe.objectName
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
@@ -80,7 +85,6 @@ ApplicationWindow {
     footer: TabBar {
         id: tabBar
         currentIndex: swipe.currentIndex
-        //anchors.bottom: windowApp.bottom
 
         Repeater {
             model: listModel
@@ -118,7 +122,6 @@ ApplicationWindow {
 
     StackView {
         id: pageStack
-        initialItem: swipe.currentItem
         focus: true; anchors.fill: parent
 
         Keys.onReleased: {
