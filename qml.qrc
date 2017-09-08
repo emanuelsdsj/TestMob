@@ -10,5 +10,6 @@
         <file>AwesomeIcon/FontAwesome.otf</file>
         <file>AwesomeIcon/Awesome.js</file>
         <file>Login.qml</file>
+        <file>MenuSwipe.qml</file>
     </qresource>
 </RCC>

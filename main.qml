@@ -12,24 +12,27 @@ ApplicationWindow {
 
     property int mainPages: 1
     property alias currentPage: pageStack.currentItem
-    property alias currentPageSwipe: swipe.currentItem
+    property alias currentPageSwipe: menuSwipe.swipeChildCurrentItem
     property alias depth: pageStack.depth
     property bool isUserLoggedIn: false
+    property TabBar tabFoot: null
     onDepthChanged:  depthChange()
     onCurrentPageSwipeChanged: currentPageSwipe ? toolbarText.text = currentPageSwipe.objectName : ""
     onCurrentPageChanged: currentPage ? toolbarText.text = currentPage.objectName : ""
     function depthChange() {
+        if(!menuSwipe)
+            return;
         if(depth === 0){
             mainPages = 1
-            tabBar.visible = true
+            //menuSwipe.tabBar.visible = true
             toolbarText.text = currentPageSwipe.objectName
-            swipe.z = swipe.parent.z + 1
-            pageStack.z = pageStack.parent.z - 1
+            menuSwipe.z = windowApp.z + 1
+            pageStack.z = windowApp.z - 1
         } else {
             mainPages = 0
-            tabBar.visible = false
-            pageStack.z = pageStack.parent.z + 1
-            swipe.z = swipe.parent.z - 1
+            //menuSwipe.tabBar.visible = false
+            pageStack.z = windowApp.z + 1
+            menuSwipe.z = windowApp.z - 1
         }
     }
 
@@ -79,60 +82,11 @@ ApplicationWindow {
         }
     }
 
-    SwipeView {
-        id: swipe
-        visible: isUserLoggedIn
-        anchors.fill: parent
-        width: windowApp.width
-        currentIndex: tabBar.currentIndex
-
-        Page1 {
-
-        }
-        Page2 {
-
-        }
+    MenuSwipe {
+        id: menuSwipe
     }
 
-    footer: TabBar {
-        id: tabBar
-        visible: isUserLoggedIn
-        currentIndex: swipe.currentIndex
-
-        Repeater {
-            model: listModel
-            TabButton {
-                height: 35
-                Rectangle {anchors.fill: parent; color: Qt.rgba(0, 0, 255, 0.3)}
-
-                ColumnLayout {
-                    spacing: 0; height: parent.height
-                    anchors.centerIn: parent
-
-                    AwesomeIcon.AwesomeIcon {
-                        id: icon1
-                        size: 10
-                        color: "black"
-                        name: iconText
-                        clickEnabled: false
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-
-                    Text {
-                        text: name
-                        color: icon1.color
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-            }
-        }
-    }
-
-    ListModel {
-        id: listModel
-        ListElement { name: "Page1"; iconText: "cut"}
-        ListElement { name: "Page2"; iconText: "paperclip"}
-    }
+    footer: menuSwipe.tabBarChild
 
     StackView {
         id: pageStack
